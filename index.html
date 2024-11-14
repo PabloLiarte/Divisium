@@ -233,12 +233,14 @@
                 <input type="text" name="investment" placeholder="¿Cuánto te interesa invertir? (opcional)">
                 <button type="submit">Quiero más información</button>
             </form>
+            
+            <!-- Mensajes de éxito o error -->
+{% if message %}
+<div class="form-message {{ message_type }}">
+    <p>{{ message }}</p>
+</div>
+{% endif %}
 
-            {% if message %}
-            <div class="form-message {{ message_type }}">
-                <p>{{ message }}</p>
-            </div>
-        {% endif %}
     </div>
 </div>
     
