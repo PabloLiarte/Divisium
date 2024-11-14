@@ -9,7 +9,7 @@ app = Flask(__name__)
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 EMAIL = "pablo.liarteg@gmail.com"  # Reemplaza con tu dirección de correo
-PASSWORD = "Mango.Kush8"    # Reemplaza con tu contraseña de correo (si tienes 2FA, usa un "app password")
+PASSWORD = "obes rcec mxls dhbb"    # Reemplaza con tu contraseña de correo (si tienes 2FA, usa un "app password")
 
 # Función para enviar el correo
 def send_email(name, email, phone, investment):
