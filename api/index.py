@@ -11,8 +11,8 @@ app = Flask(__name__)
 # Configuración para el envío de correos
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL = os.environ.get('EMAIL')  # Tu correo electrónico
-PASSWORD = os.environ.get('PASSWORD')  # Contraseña o contraseña de aplicación
+EMAIL = os.environ.get('EMAIL')
+PASSWORD = os.environ.get('PASSWORD')
 
 def send_email(name, email, phone, investment):
     subject = "Nuevo formulario de contacto"
@@ -44,10 +44,10 @@ def send_email(name, email, phone, investment):
 def index():
     if request.method == "POST":
         # Recoger los datos del formulario
-        name = request.form["name"]
-        email = request.form["email"]
-        phone = request.form["phone"]
-        investment = request.form["investment"]
+        name = request.form.get("name")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        investment = request.form.get("investment")
 
         # Enviar el correo con los datos del formulario
         if send_email(name, email, phone, investment):
@@ -59,6 +59,6 @@ def index():
 # Necesario para que funcione correctamente en Vercel
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-# Handler para Vercel
-def handler(event, context):
-    return app(event, context)
+# Agrega este bloque para ejecutar localmente
+if __name__ == "__main__":
+    app.run(debug=True)
