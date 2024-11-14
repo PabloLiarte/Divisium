@@ -1,6 +1,4 @@
 Flask==2.3.2
 Werkzeug==2.3.6
 email-validator==2.0.0
-smtplib
-email
 gunicorn==20.1.0
