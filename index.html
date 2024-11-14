@@ -226,14 +226,22 @@
     <div class="container">
         <div class="section" id="contact">
             <h2>¿Te interesa participar?</h2>
-            <form method="POST" id="contact-form">
-                <input type="text" name="name" placeholder="Tu nombre" required>
-                <input type="email" name="email" placeholder="Tu correo electrónico" required>
-                <input type="tel" name="phone" placeholder="Tu teléfono">
-                <input type="text" name="investment" placeholder="¿Cuánto te interesa invertir? (opcional)">
-                <button type="submit">Quiero más información</button>
-            </form>
+            <form method="POST" action="/">
+                <label for="name">Nombre:</label>
+                <input type="text" name="name" id="name" required><br><br>
             
+                <label for="email">Correo electrónico:</label>
+                <input type="email" name="email" id="email" required><br><br>
+            
+                <label for="phone">Teléfono:</label>
+                <input type="text" name="phone" id="phone"><br><br>
+            
+                <label for="investment">Inversión:</label>
+                <input type="text" name="investment" id="investment"><br><br>
+            
+                <button type="submit">Enviar</button>
+            </form>
+
             <!-- Mensajes de éxito o error -->
 {% if message %}
 <div class="form-message {{ message_type }}">
