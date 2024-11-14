@@ -54,6 +54,9 @@ def index():
         else:
             # Si hubo un error al enviar el correo, mostrar mensaje de error
             return render_template("index.html", message="Hubo un error al enviar tu mensaje. Por favor, intenta de nuevo.", message_type="error")
+        
+        print(f"Message: {message}")  # Esto te ayudará a ver si la variable 'message' tiene contenido
+
     
     return render_template("index.html", message=None)
 
