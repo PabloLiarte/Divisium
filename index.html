@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inversión en Viviendas Segregables</title>
+    <!-- Asegúrate de que la ruta esté bien configurada -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Times+New+Roman&display=swap');
         body {
@@ -12,7 +14,7 @@
             margin: 0;
             padding: 0;
             color: #0A1828;
-            background-color: #FFFFFF;
+            background-color: #ffffff;
         }
         header, footer {
             background-color: #0A1828;
@@ -221,17 +223,25 @@
         </div>
     </div>
 
-    <div class="section" id="contact">
-        <h2>¿Te interesa participar?</h2>
-        <form>
-            <input type="text" name="name" placeholder="Tu nombre" required>
-            <input type="email" name="email" placeholder="Tu correo electrónico" required>
-            <input type="tel" name="phone" placeholder="Tu teléfono">
-            <input type="text" name="investment" placeholder="¿Cuánto te interesa invertir? (opcional)">
-            <button type="submit">Quiero más información</button>
-        </form>
+    <div class="container">
+        <div class="section" id="contact">
+            <h2>¿Te interesa participar?</h2>
+            <form method="POST" id="contact-form">
+                <input type="text" name="name" placeholder="Tu nombre" required>
+                <input type="email" name="email" placeholder="Tu correo electrónico" required>
+                <input type="tel" name="phone" placeholder="Tu teléfono">
+                <input type="text" name="investment" placeholder="¿Cuánto te interesa invertir? (opcional)">
+                <button type="submit">Quiero más información</button>
+            </form>
+
+            {% if message %}
+            <div class="form-message {{ message_type }}">
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
     </div>
 </div>
+    
 
 <footer>
     <p>© 2024 Inversiones Segregables. Todos los derechos reservados.</p>
