@@ -1,16 +1,18 @@
 import os
 from flask import Flask, render_template, request
-import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import smtplib
 
-app = Flask(__name__, template_folder=os.getcwd(), static_folder=os.getcwd())  # Usamos el directorio actual para plantillas y archivos estáticos
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+app = Flask(__name__)
 
 # Configuración para el envío de correos
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL = "pablo.liarteg@gmail.com"  # Tu correo
-PASSWORD = "obes rcec mxls dhbb"    # Contraseña o contraseña de aplicación si tienes 2FA habilitado
+EMAIL = os.environ.get('EMAIL')  # Tu correo electrónico
+PASSWORD = os.environ.get('PASSWORD')  # Contraseña o contraseña de aplicación
 
 def send_email(name, email, phone, investment):
     subject = "Nuevo formulario de contacto"
@@ -20,7 +22,7 @@ def send_email(name, email, phone, investment):
     Teléfono: {phone}
     Inversión: {investment}
     """
-    
+
     msg = MIMEMultipart()
     msg['From'] = EMAIL
     msg['To'] = EMAIL
@@ -52,8 +54,11 @@ def index():
             return render_template("index.html", message="¡Gracias por tu interés! Hemos recibido tu mensaje.", message_type="success")
         else:
             return render_template("index.html", message="Hubo un error al enviar tu mensaje. Por favor, intenta de nuevo.", message_type="error")
-    
     return render_template("index.html", message=None)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# Necesario para que funcione correctamente en Vercel
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+# Handler para Vercel
+def handler(event, context):
+    return app(event, context)
