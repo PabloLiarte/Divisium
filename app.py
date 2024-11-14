@@ -1,9 +1,10 @@
+import os
 from flask import Flask, render_template, request
-import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-app = Flask(__name__)
+# Configuración de la aplicación Flask
+app = Flask(__name__, template_folder=os.getcwd(), static_folder=os.getcwd())  # Usamos el directorio actual para plantillas y archivos estáticos
 
 # Configuración para el envío de correos
 SMTP_SERVER = "smtp.gmail.com"
@@ -11,7 +12,23 @@ SMTP_PORT = 587
 EMAIL = "pablo.liarteg@gmail.com"  # Reemplaza con tu dirección de correo
 PASSWORD = "obes rcec mxls dhbb"    # Reemplaza con tu contraseña de correo (si tienes 2FA, usa un "app password")
 
-# Función para enviar el correo
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        # Recoger los datos del formulario
+        name = request.form["name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        investment = request.form["investment"]
+
+        # Enviar el correo con los datos del formulario
+        if send_email(name, email, phone, investment):
+            return render_template("index.html", message="¡Gracias por tu interés! Hemos recibido tu mensaje.", message_type="success")
+        else:
+            return render_template("index.html", message="Hubo un error al enviar tu mensaje. Por favor, intenta de nuevo.", message_type="error")
+    
+    return render_template("index.html", message=None)
+
 def send_email(name, email, phone, investment):
     subject = "Nuevo formulario de contacto"
     body = f"""
@@ -38,27 +55,6 @@ def send_email(name, email, phone, investment):
         print(f"Error al enviar correo: {e}")
         return False
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    if request.method == "POST":
-        # Recoger los datos del formulario
-        name = request.form["name"]
-        email = request.form["email"]
-        phone = request.form["phone"]
-        investment = request.form["investment"]
-
-        # Enviar el correo con los datos del formulario
-        if send_email(name, email, phone, investment):
-            # Si el correo fue enviado correctamente, mostrar mensaje de éxito
-            return render_template("index.html", message="¡Gracias por tu interés! Hemos recibido tu mensaje.", message_type="success")
-        else:
-            # Si hubo un error al enviar el correo, mostrar mensaje de error
-            return render_template("index.html", message="Hubo un error al enviar tu mensaje. Por favor, intenta de nuevo.", message_type="error")
-        
-        print(f"Message: {message}")  # Esto te ayudará a ver si la variable 'message' tiene contenido
-
-    
-    return render_template("index.html", message=None)
-
 if __name__ == "__main__":
     app.run(debug=True)
+
