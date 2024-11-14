@@ -1,48 +1,55 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
 }
 
+/* Estilo del contenedor principal */
 .container {
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
 }
 
-.section {
-    padding: 20px;
+/* Estilos para el formulario */
+form {
     background-color: white;
+    padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-form input, form button {
+input, button {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    font-size: 16px;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-form button {
-    background-color: #178582;
+button {
+    background-color: #4CAF50;
     color: white;
-    border: none;
     cursor: pointer;
 }
 
-form button:hover {
-    background-color: #12655e;
+button:hover {
+    background-color: #45a049;
 }
 
-.form-message.success {
-    color: green;
-    font-weight: bold;
+/* Estilos para los mensajes */
+.form-message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
 }
 
-.form-message.error {
-    color: red;
-    font-weight: bold;
+.success {
+    background-color: #4CAF50;
+    color: white;
 }
+
+.error {
+    background-color: #f44336;
+    color: white;

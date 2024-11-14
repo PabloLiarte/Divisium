@@ -1,16 +1,42 @@
 import os
 from flask import Flask, render_template, request
+import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Configuración de la aplicación Flask
 app = Flask(__name__, template_folder=os.getcwd(), static_folder=os.getcwd())  # Usamos el directorio actual para plantillas y archivos estáticos
 
 # Configuración para el envío de correos
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL = "pablo.liarteg@gmail.com"  # Reemplaza con tu dirección de correo
-PASSWORD = "obes rcec mxls dhbb"    # Reemplaza con tu contraseña de correo (si tienes 2FA, usa un "app password")
+EMAIL = "pablo.liarteg@gmail.com"  # Tu correo
+PASSWORD = "obes rcec mxls dhbb"    # Contraseña o contraseña de aplicación si tienes 2FA habilitado
+
+def send_email(name, email, phone, investment):
+    subject = "Nuevo formulario de contacto"
+    body = f"""
+    Nombre: {name}
+    Correo: {email}
+    Teléfono: {phone}
+    Inversión: {investment}
+    """
+    
+    msg = MIMEMultipart()
+    msg['From'] = EMAIL
+    msg['To'] = EMAIL
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(EMAIL, PASSWORD)
+        server.sendmail(EMAIL, EMAIL, msg.as_string())
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"Error al enviar correo: {e}")
+        return False
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -29,32 +55,5 @@ def index():
     
     return render_template("index.html", message=None)
 
-def send_email(name, email, phone, investment):
-    subject = "Nuevo formulario de contacto"
-    body = f"""
-    Nombre: {name}
-    Correo: {email}
-    Teléfono: {phone}
-    Inversión: {investment}
-    """
-
-    msg = MIMEMultipart()
-    msg['From'] = EMAIL
-    msg['To'] = EMAIL
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-
-    try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(EMAIL, PASSWORD)
-        server.sendmail(EMAIL, EMAIL, msg.as_string())
-        server.quit()
-        return True
-    except Exception as e:
-        print(f"Error al enviar correo: {e}")
-        return False
-
 if __name__ == "__main__":
     app.run(debug=True)
-
